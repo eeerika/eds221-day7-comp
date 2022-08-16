@@ -6,6 +6,7 @@ editor: visual
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
+library(lubridate)
 ```
 
 ## Joins
@@ -93,3 +94,47 @@ Limit to only Adelie penguins
 Remove any observations where flipper_length_mm is NA (hint: !is.na())
 Group the data by sex
 Find the mean (mean()), standard deviation (sd) and sample size (n) of flipper_length_mm for male and female Adelie penguins, returned in a nice summary table
+
+
+
+## Dates and times with `lubridate`
+
+```{r}
+my_date <- "03-15-1998"
+
+# mdy, ymd, dmy
+lubridate::mdy(my_date)
+
+my_date <- "11/7/2003"
+lubridate::dmy(my_date)
+
+my_date <- "08-Jun-1974"
+lubridate::dmy(my_date)
+
+my_date <- "19610518"
+my_real_date <- lubridate::ymd(my_date)
+
+lubridate::ymd("1942-08-30")
+lubridate::mdy("09/22/84")
+
+time <- "2020-08-12 11:18"
+time <- lubridate::ymd_hm(time)
+
+lubridate::with_tz(time, "America/Los_Angeles")
+
+lubridate::with_tz(time, "Asia/Jakarta")
+
+my_time <- lubridate::ymd_hms(time)
+day(my_time)
+month(my_time)
+hour(my_time)
+second(my_time)
+minute(my_time)
+
+teddy_bday <- lubridate::ymd("20170615")
+wday(teddy_bday, label = TRUE)
+week(teddy_bday)
+
+wday(lubridate::ymd("20000322"), label = TRUE)
+```
+
