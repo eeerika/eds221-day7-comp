@@ -3,15 +3,93 @@ title: "Joins and strings and dates"
 format: html
 editor: visual
 ---
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+```
 
 ## Joins
+```{r}
+animals <- tibble::tribble(
+             ~location,   ~species,  ~maturity,
+              "lagoon",   "bobcat",    "adult",
+               "bluff",   "coyote", "juvenile",
+               "creek",      "fox",    "adult",
+                "oaks", "squirrel", "juvenile",
+               "bluff",   "bobcat",    "adult"
+             )
+
+sites <- tibble::tribble(
+           ~location,      ~full_site_name, ~jurisdiction,
+             "beach",       "Goleta Beach",     "SB City",
+            "lagoon",        "UCSB Lagoon",        "UCSB",
+             "bluff",       "Ellwood Mesa",     "SB City",
+              "oaks", "Fremont Campground",        "USFS"
+           )
+```
 
 ### Full join
 
+```{r}
+full_join_example <- full_join(animals, sites, by = "location")
+```
+
 ### Left join
+
+```{r}
+left_join_example <- left_join(animals, sites, by = "location")
+```
 
 ### Inner join
 
+```{r}
+inner_join_example <- inner_join(animals, sites, by = "location")
+```
+
+```{r}
+sites_2 <- sites %>%
+  rename(loc = location)
+```
+
+Example of joining when key variables have non-matching names
+
+```{r}
+nonmatching <- full_join(animals, sites_2, by = c("location" = "loc"))
+```
+
 ### Semi join
 
+```{r}
+semi_join_example <- semi_join(animals, sites, by = "location")
+```
+
 ### Anti join
+
+```{r}
+anti_join_example <- anti_join(animals, sites, by = "location")
+```
+
+## Part 1: Data wrangling refreshers
+
+Refresher 1: Starting with the penguins dataset in the palmerpenguins package, write a single piped sequence in which you:
+
+Only include penguins at Biscoe and Dream islands
+Remove the year and sex variables
+Add a new column called body_mass_kg, with penguin mass converted from grams to kilograms
+Rename the island variable to location
+
+```{r}
+refresher_1 <- penguins %>%
+  filter(island %in% c("Biscoe", "Dream")) %>%
+  select(-year, -sex) %>%
+  mutate(body_mass_kg = body_mass_g / 1000) %>%
+  rename(location = island)
+```
+
+
+Refresher 2: Staring with the penguins dataset in the palmerpenguins package, write a single piped sequence in which you:
+
+Limit to only Adelie penguins
+Remove any observations where flipper_length_mm is NA (hint: !is.na())
+Group the data by sex
+Find the mean (mean()), standard deviation (sd) and sample size (n) of flipper_length_mm for male and female Adelie penguins, returned in a nice summary table
