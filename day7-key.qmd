@@ -138,3 +138,85 @@ week(teddy_bday)
 wday(lubridate::ymd("20000322"), label = TRUE)
 ```
 
+```{r}
+urchin_counts <- tribble(
+  ~date, ~species, ~size_mm,
+  "10/3/2020", "purple", 55,
+  "10/4/2020", "red", 48,
+  "11/17/2020", "red", 67
+)
+
+urchin_counts_ymd <- urchin_counts %>% 
+  mutate(date = lubridate::mdy(date)) %>% 
+  mutate(year = year(date),
+         month = month(date),
+         day = day(date))
+
+urchin_counts_ymd
+
+day_1 <- lubridate::ymd("2020-01-06")
+day_2 <- lubridate::ymd("2020-05-18")
+day_3 <- lubridate::ymd("2020-05-19")
+
+# Create a time interval
+time_interval <- interval(day_1, day_2)
+
+# Check the length in weeks
+time_length(time_interval, "week")
+```
+
+```{r}
+my_string <- "Teddy loves eating salmon and socks."
+
+my_string %>% str_detect("love")
+
+my_string %>% str_detect("pup")
+
+my_string <- c("burrito", "fish taco", "Taco salad")
+
+my_string %>% str_detect("fish")
+```
+
+```{r}
+skywalkers <- starwars %>%
+  filter(str_detect(name, pattern = "Skywalker"))
+
+mauls <- starwars %>%
+  filter(str_detect(name, pattern = "Maul"))
+
+blue <- starwars %>%
+  filter(str_detect(eye_color, pattern = "blue"))
+
+firewalkers <- starwars %>% 
+  mutate(name = str_replace(name, pattern = "Sky", replacement = "Fire"))
+
+head(firewalkers)
+```
+
+```{r}
+feedback <- c(" I ate     some   nachos", "Wednesday morning   ")
+
+str_squish(feedback)
+str_trim(feedback)
+
+str_to_lower(feedback)
+str_to_upper(feedback)
+str_to_title(feedback)
+str_to_sentence(feedback)
+
+starwars_lc <- starwars %>%
+  mutate(name_lower = str_to_lower(name))
+
+str_count(feedback, pattern = "nachos")
+
+```
+
+```{r}
+sw_robot <- starwars %>%
+  mutate(robot_status = case_when(
+    species == "Droid" ~ "A ROBOT!!!!",
+    species == "Human" ~ "It's a human!",
+    TRUE ~"This is something else"
+  ))
+```
+
